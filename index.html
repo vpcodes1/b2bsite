@@ -5,33 +5,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B2B Marketplace - Platforma za poslovne usluge</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
+                <i class="fas fa-briefcase"></i>
                 <h1>B2B Marketplace</h1>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home">Početna</a></li>
-                <li><a href="#services">Usluge</a></li>
-                <li><a href="#add-ad">Postavi Oglas</a></li>
-                <li><a href="#about">O Nama</a></li>
-                <li><button class="btn-login">Prijavi se</button></li>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" onclick="closeMenu()">Početna</a></li>
+                <li><a href="#featured" onclick="closeMenu()">Istaknuto</a></li>
+                <li><a href="#services" onclick="closeMenu()">Usluge</a></li>
+                <li><a href="#add-ad" onclick="closeMenu()">Postavi Oglas</a></li>
+                <li><a href="#about" onclick="closeMenu()">O Nama</a></li>
+                <li><button class="btn-login" onclick="showModal('loginModal')">Prijavi se</button></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Promeni temu">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                </li>
             </ul>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-animation"></div>
         <div class="container">
             <div class="hero-content">
-                <h2>Povežite Svoj Biznis sa Pravim Partnerima</h2>
-                <p>Platforma koja povezuje firme sa uslugama koje im trebaju - transport, IT, marketing i mnogo više</p>
+                <h2 class="animate-fade-in">Povežite Svoj Biznis sa Pravim Partnerima</h2>
+                <p class="animate-fade-in-delay">Platforma koja povezuje firme sa uslugama koje im trebaju - transport, IT, marketing i mnogo više</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-building"></i>
+                        <span class="stat-number" id="totalCompanies">0</span>
+                        <span class="stat-label">Kompanija</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span class="stat-number" id="totalAds">0</span>
+                        <span class="stat-label">Oglasa</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-handshake"></i>
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Saradnji</span>
+                    </div>
+                </div>
                 <div class="hero-buttons">
-                    <button class="btn btn-primary" onclick="scrollToSection('add-ad')">Postavi Oglas</button>
-                    <button class="btn btn-secondary" onclick="scrollToSection('services')">Pretraži Usluge</button>
+                    <button class="btn btn-primary" onclick="scrollToSection('add-ad')">
+                        <i class="fas fa-plus-circle"></i> Postavi Oglas
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollToSection('services')">
+                        <i class="fas fa-search"></i> Pretraži Usluge
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Ads Carousel -->
+    <section id="featured" class="featured-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i> Istaknuti Oglasi
+                </h2>
+                <p class="section-subtitle">Najnovije i najpopularnije poslovne ponude</p>
+            </div>
+            <div class="carousel-container">
+                <button class="carousel-btn prev" onclick="moveCarousel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Featured ads will be inserted here -->
+                </div>
+                <button class="carousel-btn next" onclick="moveCarousel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Pretraži po Kategorijama</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="filterBySpecificCategory('transport')">
+                    <i class="fas fa-truck"></i>
+                    <h3>Transport</h3>
+                    <p class="category-count" id="cat-transport">0 oglasa</p>
+                </div>
+                <div class="category-card" onclick="filterBySpecificCategory('it')">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>IT Usluge</h3>
+                    <p class="category-count" id="cat-it">0 oglasa</p>
+                </div>
+                <div class="category-card" onclick="filterBySpecificCategory('marketing')">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3>Marketing</h3>
+                    <p class="category-count" id="cat-marketing">0 oglasa</p>
+                </div>
+                <div class="category-card" onclick="filterBySpecificCategory('consulting')">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Konsalting</h3>
+                    <p class="category-count" id="cat-consulting">0 oglasa</p>
+                </div>
+                <div class="category-card" onclick="filterBySpecificCategory('manufacturing')">
+                    <i class="fas fa-industry"></i>
+                    <h3>Proizvodnja</h3>
+                    <p class="category-count" id="cat-manufacturing">0 oglasa</p>
+                </div>
+                <div class="category-card" onclick="filterBySpecificCategory('finance')">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>Finansije</h3>
+                    <p class="category-count" id="cat-finance">0 oglasa</p>
                 </div>
             </div>
         </div>
@@ -40,26 +138,62 @@
     <!-- Search and Filter Section -->
     <section class="search-section">
         <div class="container">
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Pretraži usluge ili oglase..." class="search-input">
-                <button class="btn btn-search" onclick="searchAds()">Pretraži</button>
+            <div class="search-header">
+                <h3><i class="fas fa-filter"></i> Pretraži i Filtriraj</h3>
+                <div class="view-toggles">
+                    <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Grid pogled">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="Lista pogled">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
             </div>
-            <div class="filter-container">
-                <select id="categoryFilter" class="filter-select" onchange="filterByCategory()">
-                    <option value="">Sve kategorije</option>
-                    <option value="transport">Transport i Logistika</option>
-                    <option value="it">IT Usluge</option>
-                    <option value="marketing">Marketing i Reklama</option>
-                    <option value="consulting">Konsultantske Usluge</option>
-                    <option value="manufacturing">Proizvodnja</option>
-                    <option value="finance">Finansijske Usluge</option>
-                    <option value="other">Ostalo</option>
-                </select>
-                <select id="typeFilter" class="filter-select" onchange="filterByType()">
-                    <option value="">Svi oglasi</option>
-                    <option value="offer">Nudim uslugu</option>
-                    <option value="request">Tražim uslugu</option>
-                </select>
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Pretraži usluge, oglase, kompanije..." class="search-input">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+                <button class="btn btn-search" onclick="searchAds()">
+                    <i class="fas fa-search"></i> Pretraži
+                </button>
+            </div>
+            <div class="filters-wrapper">
+                <div class="filter-row">
+                    <select id="categoryFilter" class="filter-select" onchange="applyFilters()">
+                        <option value="">Sve kategorije</option>
+                        <option value="transport">🚚 Transport i Logistika</option>
+                        <option value="it">💻 IT Usluge</option>
+                        <option value="marketing">📢 Marketing i Reklama</option>
+                        <option value="consulting">📊 Konsultantske Usluge</option>
+                        <option value="manufacturing">🏭 Proizvodnja</option>
+                        <option value="finance">💰 Finansijske Usluge</option>
+                        <option value="other">📦 Ostalo</option>
+                    </select>
+                    <select id="typeFilter" class="filter-select" onchange="applyFilters()">
+                        <option value="">Svi oglasi</option>
+                        <option value="offer">✓ Nudim uslugu</option>
+                        <option value="request">⚡ Tražim uslugu</option>
+                    </select>
+                    <select id="sortFilter" class="filter-select" onchange="applyFilters()">
+                        <option value="date-desc">Najnoviji prvo</option>
+                        <option value="date-asc">Najstariji prvo</option>
+                        <option value="price-asc">Cena: Rastuće</option>
+                        <option value="price-desc">Cena: Opadajuće</option>
+                        <option value="rating-desc">Najbolje ocenjeni</option>
+                    </select>
+                    <select id="verifiedFilter" class="filter-select" onchange="applyFilters()">
+                        <option value="">Sve kompanije</option>
+                        <option value="verified">✓ Samo verifikovane</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn-reset" onclick="resetAllFilters()">
+                        <i class="fas fa-redo"></i> Resetuj filtere
+                    </button>
+                    <span class="results-count" id="resultsCount">Prikazano: 0 oglasa</span>
+                </div>
             </div>
         </div>
     </section>
@@ -67,12 +201,30 @@
     <!-- Services/Ads Display Section -->
     <section id="services" class="services-section">
         <div class="container">
-            <h2 class="section-title">Dostupne Usluge i Oglasi</h2>
+            <div class="section-tabs">
+                <button class="tab-btn active" onclick="switchTab('all')">Svi oglasi</button>
+                <button class="tab-btn" onclick="switchTab('trending')">
+                    <i class="fas fa-fire"></i> Trending
+                </button>
+                <button class="tab-btn" onclick="switchTab('favorites')">
+                    <i class="fas fa-heart"></i> Omiljeni
+                </button>
+            </div>
+
+            <!-- Loading Skeleton -->
+            <div id="loadingSkeleton" class="loading-skeleton" style="display: none;">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+
             <div id="adsContainer" class="ads-grid">
                 <!-- Ads will be dynamically inserted here -->
             </div>
             <div id="noResults" class="no-results" style="display: none;">
-                <p>Nema pronađenih oglasa. Pokušajte sa drugačijim filterima.</p>
+                <i class="fas fa-search"></i>
+                <p>Nema pronađenih oglasa</p>
+                <p class="no-results-sub">Pokušajte sa drugačijim filterima ili pretragom</p>
             </div>
         </div>
     </section>
@@ -80,66 +232,277 @@
     <!-- Add Ad Section -->
     <section id="add-ad" class="add-ad-section">
         <div class="container">
-            <h2 class="section-title">Postavi Novi Oglas</h2>
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-plus-circle"></i> Postavi Novi Oglas
+                </h2>
+                <p class="section-subtitle">Popunite formu i povežite se sa potencijalnim partnerima</p>
+            </div>
             <div class="form-container">
+                <div class="form-progress" id="formProgress">
+                    <div class="progress-step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Osnovni podaci</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Detalji oglasa</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Dodatne informacije</div>
+                    </div>
+                </div>
+
                 <form id="adForm" onsubmit="addNewAd(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="companyName">Naziv Firme *</label>
-                            <input type="text" id="companyName" required>
+                    <!-- Step 1 -->
+                    <div class="form-step active" id="step1">
+                        <h3>Osnovni podaci kompanije</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="companyName">Naziv Firme *</label>
+                                <input type="text" id="companyName" required>
+                                <span class="form-error" id="companyNameError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Email *</label>
+                                <input type="email" id="contactEmail" required>
+                                <span class="form-error" id="contactEmailError"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Telefon *</label>
+                                <input type="tel" id="phone" required placeholder="+381...">
+                                <span class="form-error" id="phoneError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Lokacija *</label>
+                                <input type="text" id="location" required placeholder="npr. Beograd, Srbija">
+                                <span class="form-error" id="locationError"></span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                            Sledeći korak <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="form-step" id="step2">
+                        <h3>Detalji oglasa</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adType">Tip Oglasa *</label>
+                                <select id="adType" required>
+                                    <option value="">Izaberite tip</option>
+                                    <option value="offer">✓ Nudim uslugu</option>
+                                    <option value="request">⚡ Tražim uslugu</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Kategorija *</label>
+                                <select id="category" required>
+                                    <option value="">Izaberite kategoriju</option>
+                                    <option value="transport">🚚 Transport i Logistika</option>
+                                    <option value="it">💻 IT Usluge</option>
+                                    <option value="marketing">📢 Marketing i Reklama</option>
+                                    <option value="consulting">📊 Konsultantske Usluge</option>
+                                    <option value="manufacturing">🏭 Proizvodnja</option>
+                                    <option value="finance">💰 Finansijske Usluge</option>
+                                    <option value="other">📦 Ostalo</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="contactEmail">Email *</label>
-                            <input type="email" id="contactEmail" required>
+                            <label for="title">Naslov Oglasa *</label>
+                            <input type="text" id="title" required placeholder="npr. Potreban transport robe Beograd-Novi Sad">
+                            <span class="char-counter" id="titleCounter">0/100</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Opis *</label>
+                            <textarea id="description" rows="5" required placeholder="Detaljno opišite uslugu ili potrebu..."></textarea>
+                            <span class="char-counter" id="descCounter">0/500</span>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(1)">
+                                <i class="fas fa-arrow-left"></i> Nazad
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">
+                                Sledeći korak <i class="fas fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="adType">Tip Oglasa *</label>
-                            <select id="adType" required>
-                                <option value="">Izaberite tip</option>
-                                <option value="offer">Nudim uslugu</option>
-                                <option value="request">Tražim uslugu</option>
-                            </select>
+                    <!-- Step 3 -->
+                    <div class="form-step" id="step3">
+                        <h3>Dodatne informacije</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="budget">Budžet / Cena</label>
+                                <input type="text" id="budget" placeholder="npr. 1000 EUR, Po dogovoru">
+                            </div>
+                            <div class="form-group">
+                                <label for="website">Web Sajt</label>
+                                <input type="url" id="website" placeholder="https://www.primer.com">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="category">Kategorija *</label>
-                            <select id="category" required>
-                                <option value="">Izaberite kategoriju</option>
-                                <option value="transport">Transport i Logistika</option>
-                                <option value="it">IT Usluge</option>
-                                <option value="marketing">Marketing i Reklama</option>
-                                <option value="consulting">Konsultantske Usluge</option>
-                                <option value="manufacturing">Proizvodnja</option>
-                                <option value="finance">Finansijske Usluge</option>
-                                <option value="other">Ostalo</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="title">Naslov Oglasa *</label>
-                        <input type="text" id="title" required placeholder="npr. Potreban transport robe Beograd-Novi Sad">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">Opis *</label>
-                        <textarea id="description" rows="5" required placeholder="Detaljno opišite uslugu ili potrebu..."></textarea>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="location">Lokacija</label>
-                            <input type="text" id="location" placeholder="npr. Beograd, Srbija">
+                            <label>
+                                <input type="checkbox" id="verified" style="width: auto; margin-right: 10px;">
+                                Verifikovana kompanija (dodaje bedž)
+                            </label>
                         </div>
                         <div class="form-group">
-                            <label for="phone">Telefon</label>
-                            <input type="tel" id="phone" placeholder="+381...">
+                            <label>
+                                <input type="checkbox" id="featured" style="width: auto; margin-right: 10px;">
+                                Istakni ovaj oglas (prikazuje se u carousel sekciji)
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
+                                <i class="fas fa-arrow-left"></i> Nazad
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-submit">
+                                <i class="fas fa-check-circle"></i> Objavi Oglas
+                            </button>
                         </div>
                     </div>
+                </form>
+            </div>
+        </div>
+    </section>
 
-                    <button type="submit" class="btn btn-primary btn-submit">Objavi Oglas</button>
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i> Često Postavljana Pitanja
+            </h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>Kako da postavim oglas?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Postavljanje oglasa je jednostavno! Kliknite na dugme "Postavi Oglas" u navigaciji ili hero sekciji, popunite formu sa potrebnim informacijama o vašoj kompaniji i usluzi, i kliknite "Objavi Oglas". Vaš oglas će odmah biti vidljiv svim korisnicima platforme.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>Da li je platforma besplatna?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Da, osnovno korišćenje platforme je potpuno besplatno. Možete pregledati sve oglase, postavljati neograničen broj oglasa i kontaktirati kompanije bez naknade.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>Kako mogu da kontaktiram oglašivača?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Na svakom oglasu postoji dugme "Kontaktiraj" koje automatski otvara vaš email klijent sa predefinisanim tekstom. Takođe možete videti kontakt telefon ako je oglašivač dodao tu informaciju.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>Šta znači "Verifikovana kompanija"?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Verifikovane kompanije su one koje su prošle naš proces provere identiteta i legitimnosti poslovanja. Ove kompanije imaju poseban bedž na svojim oglasima, što daje dodatnu sigurnost u poslovnoj saradnji.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h4>Mogu li da izmenim svoj oglas nakon postavljanja?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>U budućoj verziji platforme dodaćemo funkcionalnost za izmenu oglasa. Trenutno možete postaviti novi oglas sa ažuriranim informacijama.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-comments"></i> Šta Kažu Naši Korisnici
+            </h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Fantastična platforma! Pronašli smo pouzdanog logističkog partnera za naš izvozni biznis za manje od nedelju dana."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div>
+                            <h4>Marko Petrović</h4>
+                            <p>CEO, ExportPro d.o.o.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Odličan način da dođemo do novih klijenata. Naša IT kompanija je ostvarila preko 10 novih projekata zahvaljujući ovoj platformi."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div>
+                            <h4>Ana Jovanović</h4>
+                            <p>Osnivač, DevTeam Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Jednostavno, brzo i efikasno. Preporučujem svim firmama koje traže poslovne partnere i usluge."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">N</div>
+                        <div>
+                            <h4>Nikola Savić</h4>
+                            <p>Direktor, Marketing Plus</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h2><i class="fas fa-envelope"></i> Prijavite se za Newsletter</h2>
+                    <p>Budite u toku sa najnovijim oglasima i poslovnim mogućnostima</p>
+                </div>
+                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" placeholder="Vaša email adresa" required>
+                    <button type="submit" class="btn btn-primary">
+                        Prijavi se
+                    </button>
                 </form>
             </div>
         </div>
@@ -151,19 +514,24 @@
             <h2 class="section-title">O Platformi</h2>
             <div class="about-content">
                 <div class="about-card">
-                    <div class="about-icon">🤝</div>
+                    <div class="about-icon"><i class="fas fa-handshake"></i></div>
                     <h3>Povezivanje Biznisa</h3>
                     <p>Omogućavamo firmama da lako pronađu poslovne partnere i usluge koje im trebaju</p>
                 </div>
                 <div class="about-card">
-                    <div class="about-icon">🚀</div>
+                    <div class="about-icon"><i class="fas fa-rocket"></i></div>
                     <h3>Brzo i Efikasno</h3>
                     <p>Jednostavno postavljanje oglasa i pretraga dostupnih usluga u realnom vremenu</p>
                 </div>
                 <div class="about-card">
-                    <div class="about-icon">💼</div>
+                    <div class="about-icon"><i class="fas fa-briefcase"></i></div>
                     <h3>Raznovrsne Kategorije</h3>
                     <p>Od transporta do IT usluga - sve što vašem biznisu treba na jednom mestu</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Sigurnost i Verifikacija</h3>
+                    <p>Sistem verifikacije kompanija za dodatnu sigurnost u poslovanju</p>
                 </div>
             </div>
         </div>
@@ -174,19 +542,33 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>B2B Marketplace</h3>
+                    <h3><i class="fas fa-briefcase"></i> B2B Marketplace</h3>
                     <p>Vaš partner za poslovnu saradnju</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h4>Kontakt</h4>
-                    <p>Email: info@b2bmarketplace.rs</p>
-                    <p>Telefon: +381 11 123 4567</p>
+                    <p><i class="fas fa-envelope"></i> info@b2bmarketplace.rs</p>
+                    <p><i class="fas fa-phone"></i> +381 11 123 4567</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Beograd, Srbija</p>
                 </div>
                 <div class="footer-section">
                     <h4>Linkovi</h4>
                     <p><a href="#home">Početna</a></p>
                     <p><a href="#services">Usluge</a></p>
                     <p><a href="#add-ad">Postavi Oglas</a></p>
+                    <p><a href="#about">O Nama</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Pravne Informacije</h4>
+                    <p><a href="#" onclick="showModal('termsModal')">Uslovi korišćenja</a></p>
+                    <p><a href="#" onclick="showModal('privacyModal')">Politika privatnosti</a></p>
+                    <p><a href="#" onclick="showModal('cookieModal')">Politika kolačića</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -194,6 +576,57 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('loginModal')">&times;</span>
+            <h2><i class="fas fa-user"></i> Prijava</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Lozinka</label>
+                    <input type="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Prijavi se</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('termsModal')">&times;</span>
+            <h2>Uslovi Korišćenja</h2>
+            <p>Ovde će biti prikazani uslovi korišćenja platforme...</p>
+        </div>
+    </div>
+
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('privacyModal')">&times;</span>
+            <h2>Politika Privatnosti</h2>
+            <p>Ovde će biti prikazana politika privatnosti...</p>
+        </div>
+    </div>
+
+    <div id="cookieModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('cookieModal')">&times;</span>
+            <h2>Politika Kolačića</h2>
+            <p>Ovde će biti prikazana politika kolačića...</p>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
